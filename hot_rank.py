@@ -59,12 +59,6 @@ def save_to_csv(new_data):
         print(f"Git 推送失败: {e}")
 
 def main():
-    """主逻辑"""
-    # 获取当前时间
-    if datetime.now().hour < 17:
-        print("未到 17:00，不运行")
-        return  # 提前返回，终止运行
-
     # 获取数据
     new_data = fetch_hot_rank()
     if new_data is not None:
