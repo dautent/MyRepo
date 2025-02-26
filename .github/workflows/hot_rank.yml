@@ -2,7 +2,7 @@ name: Fetch Hot Rank Data
 
 on:
   schedule:
-    - cron: '30 17 * * *'  # 每天 17:30 运行
+    - cron: '30 14 * * *'  # 每天 UTC 14:30 = 北京时间 22:30
   workflow_dispatch:  # 允许手动触发
 
 jobs:
@@ -10,33 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🛎️ 检出仓库
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: false  # 让后续的 push 操作使用 PAT
-          fetch-depth: 0
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: 🐍 设置 Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - name: 📦 安装依赖
-        run: pip install pandas akshare
-
-      - name: 🚀 运行脚本
-        run: python hot_rank.py  # 你的 Python 文件名
-
-      - name: 🔑 配置 Git
+      - name: Install dependencies
         run: |
-          git config --global user.name "github-actions"
+          pip install akshare pandas
+
+      - name: Run script
+        run: python hot_rank.py
+
+      - name: Commit and push changes
+        run: |
           git config --global user.email "github-actions@github.com"
-
-      - name: 💾 提交并推送更新
-        run: |
+          git config --global user.name "github-actions"
           git add 人气榜.csv
-          git commit -m "更新人气榜数据 $(date '+%Y-%m-%d')" || exit 0
-          git push
+          git commit -m "更新人气榜数据 $(date +'%Y-%m-%d')" || exit 0
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
