@@ -25,7 +25,7 @@ jobs:
         run: pip install pandas akshare
 
       - name: 🚀 运行脚本
-        run: python fetch_hot_rank.py  # 你的 Python 文件名
+        run: python hot_rank.py  # 你的 Python 文件名
 
       - name: 🔑 配置 Git
         run: |
