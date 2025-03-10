@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install akshare pandas
+          pip install --upgrade akshare pandas
 
       - name: Run script
         run: python hot_rank.py
