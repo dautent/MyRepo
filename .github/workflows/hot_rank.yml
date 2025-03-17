@@ -29,8 +29,8 @@ jobs:
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
-          git add 人气榜.csv
-          git commit -m "更新人气榜数据 $(date +'%Y-%m-%d')" || exit 0
+          git add hot_rank.csv.gz
+          git commit -m "更新数据 $(date +'%Y-%m-%d')" || exit 0
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
