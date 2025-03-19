@@ -1,8 +1,9 @@
 import os
 import pandas as pd
 import akshare as ak
-from datetime import datetime
 import subprocess  # 用于 Git 操作
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo  # Python 3.9+
 
 # 数据存储路径
 CSV_FILE = os.path.join(os.getenv("GITHUB_WORKSPACE", ""), "hot_rank.csv.gz")
@@ -65,10 +66,12 @@ def main():
     if new_data is not None:
         save_to_csv(new_data)
 
-    #保存日志
-    today = new_data["date"].iloc[-1]
+    formatted_time = datetime.now(timezone.utc).astimezone(ZoneInfo("Asia/Shanghai")).strftime('%Y-%m-%d %H:%M')
+    # 保存日志
+    status = "✅" if new_data is not None else "没有获取到新数据，跳过日志写入。"
+    log_message = f"{formatted_time} {status}"
     with open(LOG_FILE, "a", encoding="utf-8") as f:
-        f.write(f"{today}\n")
+        f.write(f"{log_message}\n")
 
 if __name__ == "__main__":
     main()
