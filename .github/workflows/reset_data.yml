@@ -1,0 +1,29 @@
+name: Reset Data
+
+on:
+  workflow_dispatch:  # 仅支持手动触发
+
+jobs:
+  reset_data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Remove all CSV files
+        run: |
+          rm -fv *.csv.gz
+
+      - name: Reset log file
+        run: echo -e "...\n" > hot_rank_log.txt
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "github-actions"
+          git add -A
+          git commit -m "Reset Data" || exit 0
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,8 +1,8 @@
-name: Fetch Hot Rank Data
+name: Fetch Daily Data
 
 on:
   schedule:
-    - cron: '30 14 * * *'  # 每天 UTC 14:30 = 北京时间 22:30
+    - cron: '00 14 * * *'  # 每天 UTC 14:0 = 北京时间 22:00
   workflow_dispatch:  # 允许手动触发
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
           pip install --upgrade akshare pandas
 
       - name: Run script
-        run: python hot_rank.py
+        run: python daily_data.py
 
       - name: Commit and push changes
         run: |
