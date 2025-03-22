@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade akshare pandas
+          pip install akshare==1.16.36 pandas
 
       - name: Run script
         run: python daily_data.py

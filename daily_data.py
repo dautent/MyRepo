@@ -8,7 +8,7 @@ from zoneinfo import ZoneInfo  # Python 3.9+
 # 数据存储路径
 RANK_FILE = os.path.join(os.getenv("GITHUB_WORKSPACE", ""), "hot_rank.csv.gz")
 SPOT_FILE = os.path.join(os.getenv("GITHUB_WORKSPACE", ""), "a_spot.csv.gz")
-LOG_FILE = os.path.join(os.getenv("GITHUB_WORKSPACE", ""), "hot_rank_log.txt")
+LOG_FILE = os.path.join(os.getenv("GITHUB_WORKSPACE", ""), "log.txt")
 NOW = datetime.now(timezone.utc).astimezone(ZoneInfo("Asia/Shanghai"))
 
 def fetch_hot_rank():
@@ -72,7 +72,7 @@ def log(rank_data, spot_data):
     spot_info = f"行情数据：{len(spot_data)}条" if spot_data is not None else "行情数据：没有获取到新数据，跳过日志写入。"
 
     # 生成日志内容
-    log_message = f"{NOW.strftime('%Y-%m-%d')} {status} {rank_info}。{spot_info}"
+    log_message = f"{NOW.strftime('%Y-%m-%d %H:%M:%S')} {status} {rank_info}。{spot_info}"
     # 写入日志文件
     with open(LOG_FILE, "a", encoding="utf-8") as f:
         f.write(f"{log_message}\n")
